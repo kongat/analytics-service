@@ -8,6 +8,7 @@ dotenv.config({ path:  path.join(__dirname, `../.env.${environment}`)});
 const port = 3000;
 
 app.listen(port, () => {
+    console.log(process.env.DATABASE_URL)
     console.log(`Server is running on http://localhost:${port}`);
 });
 
