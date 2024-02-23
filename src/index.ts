@@ -1,6 +1,9 @@
 import app from './server'
 import * as dotenv from 'dotenv'
-dotenv.config()
+import path from 'path'
+
+const environment = process.env.NODE_ENV.trim() || 'development';
+dotenv.config({ path:  path.join(__dirname, `../.env.${environment}`)});
 
 const port = 3000;
 

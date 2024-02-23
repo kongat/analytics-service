@@ -89,7 +89,7 @@ router.put("/employee/:id",
 router.delete("/employee/:id", deleteEmployee);
 
 /**
- * Employee
+ * Metric
  */
 router.post("/metric",
     body("score").isDecimal(),
