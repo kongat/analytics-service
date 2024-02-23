@@ -9,6 +9,7 @@ const port = 3000;
 
 app.listen(port, () => {
     console.log(process.env.DATABASE_URL)
+    console.log(environment)
     console.log(`Server is running on http://localhost:${port}`);
 });
 
