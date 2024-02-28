@@ -30,15 +30,19 @@ model Employee {
   id        String   @id @default(uuid())
   firstName String   @db.VarChar(255)
   lastName  String   @db.VarChar(255)
+  gender    GENDER?
+  status    STATUS?
+  birthDate DateTime? @db.Date
   metrics   Metric[]
 }
 
 model Metric {
-  id         String   @id @default(uuid())
-  score      Float
-  createdAt  DateTime @default(now())
-  employeeId String
-  employee   Employee @relation(fields: [employeeId], references: [id])
+  id                  String   @id @default(uuid())
+  physicalScore       Float?
+  mentalScore         Float?
+  createdAt           DateTime @default(now())
+  employeeId          String
+  employee            Employee @relation(fields: [employeeId], references: [id])
 }
 
 model Update {
@@ -70,4 +74,15 @@ enum UPDATE_STATUS {
   LIVE
   DEPRECATED
   ARCHIVED
+}
+
+enum GENDER {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum STATUS {
+  ACTIVE
+  OFFLINE
 }

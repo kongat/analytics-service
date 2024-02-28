@@ -2,12 +2,10 @@ import { Prisma } from "@prisma/client";
 import prisma from "../modules/db";
 
 export const createMetric = async (req,res) => {
-    console.log(req.body)
-    console.log(req.body.score)
-    console.log(+req.body.score)
     const metric = await prisma.metric.create({
         data: {
-            score: req.body.score,
+            physicalScore: req.body.physicalScore,
+            mentalScore: req.body.mentalScore,
             employeeId: req.body.employeeId
         }
     })

@@ -10,6 +10,25 @@ export const getEmployees = async (req,res) => {
     res.json({data: employees})
 }
 
+export const getEmployeesPageable = async (req,res) => {
+    const { page = 0, pageSize = 10 } = req.query;
+    
+
+    const [employees,count] = await prisma.$transaction([
+    
+    prisma.employee.findMany({
+        skip:+page * +pageSize,
+        take:+pageSize,
+        include: {
+            metrics: true
+        }
+    }),
+
+    prisma.employee.count()])
+
+    res.json({data: employees,totalElements: count})
+}
+
 export const getOneEmployee = async (req, res) => {
 
     const id = req.params.id
@@ -30,7 +49,8 @@ export const createEmployee = async (req,res) => {
     const employee = await prisma.employee.create({
         data: {
             firstName: req.body.firstName,
-            lastName: req.body.lastName
+            lastName: req.body.lastName,
+            
         }
     })
 

@@ -2,8 +2,9 @@ import { Router } from "express";
 import { body, validationResult } from "express-validator";
 import { handleInputErrors } from "./modules/middlewares";
 import { createProduct, getProducts } from "./handlers/product";
-import { createEmployee, deleteEmployee, getEmployees, getOneEmployee, updateEmployee } from "./handlers/employee";
+import { createEmployee, deleteEmployee, getEmployees, getEmployeesPageable, getOneEmployee, updateEmployee } from "./handlers/employee";
 import { createMetric, getOneMetric } from "./handlers/metric";
+import { changePass, getUsers, getUsersPageable } from "./handlers/user";
 
 const router = Router();
 
@@ -71,6 +72,7 @@ router.delete("/updatepoint/:id", (req, res) => {});
  * Employee
  */
 router.get("/employee", getEmployees);
+router.get("/employee-pageable", getEmployeesPageable);
 
 router.get("/employee/:id", getOneEmployee);
 
@@ -92,10 +94,21 @@ router.delete("/employee/:id", deleteEmployee);
  * Metric
  */
 router.post("/metric",
-    body("score").isDecimal(),
+    body("physicalScore").isDecimal(),
+    body("mentalScore").isDecimal(),
     body("employeeId").isString(), 
     handleInputErrors, 
     createMetric);
 
 router.get("/metric/:id", getOneMetric);
+
+/**
+ * Users
+ */
+router.get("/user", getUsers);
+router.get("/user-pageable", getUsersPageable);
+
+router.post("/change-pass", changePass);
+
+
 export default router;
