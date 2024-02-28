@@ -27,22 +27,22 @@ model Product {
 }
 
 model Employee {
-  id        String   @id @default(uuid())
-  firstName String   @db.VarChar(255)
-  lastName  String   @db.VarChar(255)
+  id        String    @id @default(uuid())
+  firstName String    @db.VarChar(255)
+  lastName  String    @db.VarChar(255)
+  birthDate DateTime? @db.Date
   gender    GENDER?
   status    STATUS?
-  birthDate DateTime? @db.Date
   metrics   Metric[]
 }
 
 model Metric {
-  id                  String   @id @default(uuid())
-  physicalScore       Float?
-  mentalScore         Float?
-  createdAt           DateTime @default(now())
-  employeeId          String
-  employee            Employee @relation(fields: [employeeId], references: [id])
+  id            String   @id @default(uuid())
+  createdAt     DateTime @default(now())
+  employeeId    String
+  mentalScore   Float?
+  physicalScore Float?
+  employee      Employee @relation(fields: [employeeId], references: [id])
 }
 
 model Update {

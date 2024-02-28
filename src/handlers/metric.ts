@@ -4,7 +4,7 @@ import prisma from "../modules/db";
 export const createMetric = async (req,res) => {
     const metric = await prisma.metric.create({
         data: {
-            
+            physicalScore: req.body.physicalScore,
             mentalScore: req.body.mentalScore,
             employeeId: req.body.employeeId
         }
