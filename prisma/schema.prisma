@@ -38,8 +38,8 @@ model Employee {
 
 model Metric {
   id                  String   @id @default(uuid())
-  physicalScore       Float
-  mentalScore         Float
+  physicalScore       Float?
+  mentalScore         Float?
   createdAt           DateTime @default(now())
   employeeId          String
   employee            Employee @relation(fields: [employeeId], references: [id])
