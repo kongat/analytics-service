@@ -46,11 +46,14 @@ export const getOneEmployee = async (req, res) => {
 }
 
 export const createEmployee = async (req,res) => {
+    console.log(req.body.birthDate + "sdsds")
     const employee = await prisma.employee.create({
         data: {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
-            
+            birthDate: req.body.birthDate,
+            gender: req.body.gender,
+            userId: req.body.userId
         }
     })
 
@@ -58,7 +61,7 @@ export const createEmployee = async (req,res) => {
 }
 
 export const updateEmployee = async (req,res) => {
-    const id = req.params.id
+    const id = req.body.id
     const product = await prisma.employee.update({
         where: {
             id
@@ -66,6 +69,8 @@ export const updateEmployee = async (req,res) => {
         data: {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
+            birthDate: req.body.birthDate,
+            gender: req.body.gender,
         }
     })
 

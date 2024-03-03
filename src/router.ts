@@ -4,7 +4,7 @@ import { handleInputErrors } from "./modules/middlewares";
 import { createProduct, getProducts } from "./handlers/product";
 import { createEmployee, deleteEmployee, getEmployees, getEmployeesPageable, getOneEmployee, updateEmployee } from "./handlers/employee";
 import { createMetric, getOneMetric } from "./handlers/metric";
-import { changePass, getUsers, getUsersPageable } from "./handlers/user";
+import { changeMyPass, changeUserPass, createNewUser, deleteUser, getUsers, getUsersPageable, getUsersWithEmployeeRole, updateUser } from "./handlers/user";
 
 const router = Router();
 
@@ -82,7 +82,7 @@ router.post("/employee",
     handleInputErrors, 
     createEmployee);
 
-router.put("/employee/:id",
+router.put("/employee",
     body("firstName").isString(), 
     body("lastName").isString(), 
     handleInputErrors, 
@@ -107,8 +107,16 @@ router.get("/metric/:id", getOneMetric);
  */
 router.get("/user", getUsers);
 router.get("/user-pageable", getUsersPageable);
-
-router.post("/change-pass", changePass);
+router.post("/user",handleInputErrors, createNewUser);
+router.put("/user",
+    body("username").isString(), 
+    body("role").isString(), 
+    handleInputErrors, 
+    updateUser);
+router.put("/change-my-pass", changeMyPass);
+router.put("/change-user-pass", changeUserPass);
+router.delete("/user/:id", deleteUser);
+router.get("/user/employee", getUsersWithEmployeeRole);
 
 
 export default router;

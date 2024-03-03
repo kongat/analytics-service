@@ -12,7 +12,9 @@ model User {
   password  String
   username  String    @unique
   createdAt DateTime  @default(now())
+  role      ROLE?
   products  Product[]
+  employee  Employee?
 }
 
 model Product {
@@ -32,8 +34,10 @@ model Employee {
   lastName  String    @db.VarChar(255)
   birthDate DateTime? @db.Date
   gender    GENDER?
-  status    STATUS?
-  metrics   Metric[]
+  status    STATUS?   @default(OFFLINE)
+  metrics   Metric[] 
+  userId    String    @unique
+  user      User     @relation(fields: [userId], references: [id],onDelete: Cascade)
 }
 
 model Metric {
@@ -42,7 +46,7 @@ model Metric {
   employeeId    String
   mentalScore   Float?
   physicalScore Float?
-  employee      Employee @relation(fields: [employeeId], references: [id])
+  employee      Employee @relation(fields: [employeeId], references: [id],onDelete: Cascade)
 }
 
 model Update {
@@ -85,4 +89,10 @@ enum GENDER {
 enum STATUS {
   ACTIVE
   OFFLINE
+}
+
+enum ROLE {
+  ADMIN
+  EMPLOYEE
+  MANAGER
 }
