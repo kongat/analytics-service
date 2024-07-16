@@ -62,7 +62,7 @@ export const createEmployee = async (req,res) => {
 
 export const updateEmployee = async (req,res) => {
     const id = req.body.id
-    const product = await prisma.employee.update({
+    const employee = await prisma.employee.update({
         where: {
             id
         },
@@ -74,7 +74,7 @@ export const updateEmployee = async (req,res) => {
         }
     })
 
-    res.json({data: product})
+    res.json({data: employee})
 }
 
 export const deleteEmployee = async (req,res) => {

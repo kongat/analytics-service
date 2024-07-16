@@ -1,12 +1,10 @@
 import { Router } from "express";
 import { body, validationResult } from "express-validator";
 import { handleInputErrors } from "./modules/middlewares";
-import { createProduct, getOneProduct, getProducts } from "./handlers/product";
 import { createEmployee, deleteEmployee, getEmployees, getEmployeesPageable, getOneEmployee, updateEmployee } from "./handlers/employee";
 import { createMetric, getOneMetric } from "./handlers/metric";
 import { changeMyPass, changeUserPass, createNewUser, deleteUser, getUsers, getUsersPageable, getUsersWithEmployeeRole, updateUser } from "./handlers/user";
-import { deleteProduct } from "./handlers/product";
-import { createUpdate, deleteUpdate, updateUpdate } from "./handlers/update";
+
 
 const router = Router();
 
@@ -14,41 +12,6 @@ const customLoggerForSingleRouter = (message) => (req,res,next) => {
     console.log(`Hello from ${message}`)
     next()
   }
-/**
- * Product
- */
-router.get("/product", getProducts);
-
-router.get("/product/:id", getOneProduct);
-
-router.post("/product",body("name").isString(), handleInputErrors, createProduct);
-
-router.put("/product/:id",body("name").isString(), handleInputErrors, (req, res) => {});
-
-router.delete("/product/:id", deleteProduct);
-
-/**
- * Update
- */
-
-router.get("/update", (req, res) => {});
-
-router.get("/update/:id", (req, res) => {});
-
-router.post("/update", 
-    body('title').exists().isString(),
-    body('body').exists().isString(),
-    body('productId').exists().isString(),
-    createUpdate);
-
-router.put("/update/:id", 
-    body('title').optional(),
-    body('body').optional(),
-    body('status').isIn(['INPROGRESS','SHIPPED','DEPRECATED']).optional(),
-    body('version').optional(),
-    updateUpdate);
-
-router.delete("/update/:id", deleteUpdate);
 
 /**
  * UpdatePoint
