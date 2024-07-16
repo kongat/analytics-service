@@ -2,6 +2,7 @@ import { comparePasswords, createJWT, hashPassword } from "../modules/auth";
 import prisma from "../modules/db";
 
 export const createNewUser = async (req, res) => {
+    
     const hash = await hashPassword(req.body.username + '!');
   
     const user = await prisma.user.create({
@@ -19,7 +20,8 @@ export const createNewUser = async (req, res) => {
       }
     });
     const token = createJWT(user);
-    res.json({ data: user });
+    res.json({ data: user, token });
+    req.app.io.sockets.emit('test',{data: "received"});
 };
 
 export const signin = async (req, res) => {
@@ -50,6 +52,37 @@ export const signin = async (req, res) => {
   const token = createJWT(user);
   res.json({ token });
 };
+
+
+export const appSignin = async (req, res) => {
+  const user = await prisma.user.findUnique({
+    where: { username: req.body.username },
+  });
+
+  if(!user){
+    res.status(401);
+    res.send("Invalid username");
+    return;
+  }
+  
+  const isValid = await comparePasswords(req.body.password, user.password);
+
+  if (!isValid) {
+    res.status(401);
+    res.send("Invalid password");
+    return;
+  }
+
+  if(user.role !== 'EMPLOYEE'){
+    res.status(401);
+    res.send("Unathorized");
+    return;
+  }
+  console.log(user)
+  const token = createJWT(user);
+  res.json({ token });
+};
+
 
 export const getUsers = async (req,res) => {
   const users = await prisma.user.findMany({
@@ -83,7 +116,7 @@ export const getUsersPageable = async (req,res) => {
       }
   }),
 
-  prisma.employee.count()])
+  prisma.user.count()])
 
   res.json({data: users,totalElements: count})
 }

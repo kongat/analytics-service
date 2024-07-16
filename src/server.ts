@@ -1,11 +1,30 @@
 import express from 'express';
+import {createServer} from 'http';
 import morgan from 'morgan';
+import { Server } from 'socket.io';
 import cors from 'cors';
 import router from './router'
 import { protect } from './modules/auth'
-import { createNewUser, signin } from './handlers/user';
+import { appSignin, createNewUser, signin } from './handlers/user';
 
 const app = express();
+const server = createServer(app);
+const io = new Server(server, { cors: { origin: '*' } });
+app.io = io;
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+
+  socket.on('message', (data) => {
+      console.log('message received:', data);
+      // Broadcast the message to all clients
+      io.emit('message', data);
+  });
+
+  socket.on('disconnect', () => {
+      console.log('user disconnected');
+  });
+});
 
 //middleare with custom parameter
 const customLogger = (message) => (req,res,next) => {
@@ -39,7 +58,9 @@ app.get('/', (req, res) => {
 app.use('/api',protect,router);
 app.post("/user", createNewUser);
 app.post("/signin", signin);
+app.post("/app-signin", appSignin);
 
 
-export default app;
+
+export default server;
 
