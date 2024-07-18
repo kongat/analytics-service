@@ -45,6 +45,22 @@ export const getOneEmployee = async (req, res) => {
     res.json({data: employee})
 }
 
+export const getEmployeeByUserId = async (req, res) => {
+
+    const userId = req.params.userId
+    
+    const employee = await prisma.employee.findFirst({
+        where: {
+            userId
+        },
+        include: {
+            metrics: true
+        }
+    })
+
+    res.json({data: employee})
+}
+
 export const createEmployee = async (req,res) => {
     console.log(req.body.birthDate + "sdsds")
     const employee = await prisma.employee.create({

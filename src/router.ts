@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { body, validationResult } from "express-validator";
 import { handleInputErrors } from "./modules/middlewares";
-import { createEmployee, deleteEmployee, getEmployees, getEmployeesPageable, getOneEmployee, updateEmployee } from "./handlers/employee";
+import { createEmployee, deleteEmployee, getEmployeeByUserId, getEmployees, getEmployeesPageable, getOneEmployee, updateEmployee } from "./handlers/employee";
 import { createMetric, getOneMetric } from "./handlers/metric";
 import { changeMyPass, changeUserPass, createNewUser, deleteUser, getUsers, getUsersPageable, getUsersWithEmployeeRole, updateUser } from "./handlers/user";
 
@@ -43,6 +43,7 @@ router.get("/employee", getEmployees);
 router.get("/employee-pageable", getEmployeesPageable);
 
 router.get("/employee/:id", getOneEmployee);
+router.get("/employee-by-user-id/:userId", getEmployeeByUserId);
 
 router.post("/employee",
     body("firstName").isString(),
