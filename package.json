@@ -8,6 +8,7 @@
     "start": "ts-node src/index.ts",
     "migrate:uat": "dotenv -e .env.uat -- npx prisma migrate deploy",
     "start:dev": "SET NODE_ENV=development && npm start",
+    "introspect:dev": "set NODE_ENV=development && npx prisma db pull",
     "start:uat": "set NODE_ENV=uat && npx prisma generate deploy && npm start"
   },
   "author": "",

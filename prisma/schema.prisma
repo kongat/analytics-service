@@ -8,91 +8,78 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  password  String
-  username  String    @unique
-  createdAt DateTime  @default(now())
-  role      ROLE?
-  //products  Product[]
-  employee  Employee?
+  userId    String     @id @db.VarChar
+  password  String     @db.VarChar
+  username  String     @db.VarChar
+  createdAt DateTime   @db.Timestamp(6)
+  role      String     @db.VarChar
+  employee  Employee[]
 }
 
-// model Product {
-//   id          String   @id @default(uuid())
-//   createdAt   DateTime @default(now())
-//   name        String   @db.VarChar(255)
-//   belongsToId String
-//   belongsTo   User     @relation(fields: [belongsToId], references: [id])
-//   updates     Update[]
-
-//   @@unique([id, belongsToId])
-// }
-
 model Employee {
-  id        String    @id @default(uuid())
-  firstName String    @db.VarChar(255)
-  lastName  String    @db.VarChar(255)
-  birthDate DateTime? @db.Date
-  gender    GENDER?
-  status    STATUS?   @default(OFFLINE)
-  metrics   Metric[] 
-  userId    String    @unique
-  user      User     @relation(fields: [userId], references: [id],onDelete: Cascade)
+  employeeId String     @id @db.VarChar
+  firstName  String     @db.VarChar
+  lastName   String     @db.VarChar
+  birthDate  DateTime   @db.Timestamp(6)
+  gender     String     @db.Char(1)
+  status     String     @db.VarChar
+  userId     String?    @db.VarChar
+  ActCount   ActCount[]
+  Bpm        Bpm[]
+  user       User?      @relation(fields: [userId], references: [userId], onUpdate: NoAction)
+  metrics    Metric[]
+  PassOut    PassOut[]
+  Sos        Sos[]
 }
 
 model Metric {
-  id            String   @id @default(uuid())
-  createdAt     DateTime @default(now())
-  employeeId    String
+  createdAt     DateTime @db.Timestamp(6)
+  employeeId    String   @db.VarChar
   mentalScore   Float?
   physicalScore Float?
-  employee      Employee @relation(fields: [employeeId], references: [id],onDelete: Cascade)
+  employee      Employee @relation(fields: [employeeId], references: [employeeId], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([createdAt, employeeId])
 }
 
-// model Update {
-//   id           String        @id @default(uuid())
-//   createdAt    DateTime      @default(now())
-//   updatedAt    DateTime      @updatedAt
-//   title        String        @db.VarChar(255)
-//   body         String
-//   status       UPDATE_STATUS @default(IN_PROGRESS)
-//   version      String?
-//   asset        String?
-//   productId    String
-//   product      Product       @relation(fields: [productId], references: [id])
-//   updatePoints UpdatePoint[]
-// }
+model ActCount {
+  employeeId String   @db.VarChar
+  createdAt  DateTime @db.Timestamp(6)
+  count      Int
+  Employee   Employee @relation(fields: [employeeId], references: [employeeId], onDelete: Cascade, onUpdate: NoAction)
 
-// model UpdatePoint {
-//   id          String   @id @default(uuid())
-//   createdAt   DateTime @default(now())
-//   updatedAt   DateTime
-//   name        String   @db.VarChar(255)
-//   description String
-//   updateId    String
-//   update      Update   @relation(fields: [updateId], references: [id])
-// }
-
-enum UPDATE_STATUS {
-  IN_PROGRESS
-  LIVE
-  DEPRECATED
-  ARCHIVED
+  @@id([employeeId, createdAt])
 }
 
-enum GENDER {
-  MALE
-  FEMALE
-  OTHER
+model Bpm {
+  employeeId String   @db.VarChar
+  createdAt  DateTime @db.Timestamp(6)
+  value      Float
+  Employee   Employee @relation(fields: [employeeId], references: [employeeId], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([employeeId, createdAt])
 }
 
-enum STATUS {
-  ACTIVE
-  OFFLINE
+model Overall {
+  createdAt        DateTime @id @db.Timestamp(6)
+  avgMentalScore   Float?
+  avgPhysicalScore Float?
 }
 
-enum ROLE {
-  ADMIN
-  EMPLOYEE
-  MANAGER
+model PassOut {
+  employeeId String   @db.VarChar
+  createdAt  DateTime @db.Timestamp(6)
+  value      Boolean
+  Employee   Employee @relation(fields: [employeeId], references: [employeeId], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([employeeId, createdAt])
+}
+
+model Sos {
+  employeeId String   @db.VarChar
+  createdAt  DateTime @db.Timestamp(6)
+  value      Boolean
+  Employee   Employee @relation(fields: [employeeId], references: [employeeId], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([employeeId, createdAt])
 }
