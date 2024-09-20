@@ -42,7 +42,7 @@ export const getOneEmployee = async (req, res) => {
         }
     }) 
 
-    res.json({data: employee})
+    res.json({data: employee}) 
 }
 
 export const getEmployeeByUserId = async (req, res) => {
