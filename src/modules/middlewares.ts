@@ -9,4 +9,4 @@ export const handleInputErrors = (req,res,next) => {
     }else {
         next()
     }
-}
+} 
