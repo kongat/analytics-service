@@ -7,9 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/index.ts",
     "migrate:uat": "dotenv -e .env.uat -- npx prisma migrate deploy",
-    "start:dev": "SET NODE_ENV=development && npm start",
-    "introspect:dev": "set NODE_ENV=development && npx prisma db pull",
-    "start:uat": "set NODE_ENV=uat && npx prisma generate deploy && npm start"
+    "start:dev": "dotenv -e .env.development -- npx prisma generate && npm start",
+    "introspect:dev": "dotenv -e .env.development -- npx prisma db pull",
+    "start:uat": "dotenv -e .env.uat -- npx prisma generate && npm start"
   },
   "author": "",
   "license": "ISC",
