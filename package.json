@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node src/index.ts",
+    "start": "npx prisma generate && ts-node src/index.ts",
     "migrate:uat": "dotenv -e .env.uat -- npx prisma migrate deploy",
     "start:dev": "dotenv -e .env.development -- npx prisma generate && npm start",
     "introspect:dev": "dotenv -e .env.development -- npx prisma db pull",
-    "start:uat": "dotenv -e .env.uat -- npx prisma generate && npm start"
+    "start:uat": "dotenv -e .env.uat -- npm start"
   },
   "author": "",
   "license": "ISC",
