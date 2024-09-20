@@ -8,25 +8,25 @@ datasource db {
 }
 
 model User {
-  userId    String     @id @db.VarChar
+  userId    String     @id @db.VarChar @default(uuid())
   password  String     @db.VarChar
-  username  String     @db.VarChar
+  username  String     @db.VarChar @unique
   createdAt DateTime   @db.Timestamp(6)
-  role      String     @db.VarChar
-  employee  Employee[]
+  role      ROLE?
+  employee  Employee?
 }
 
 model Employee {
-  employeeId String     @id @db.VarChar
+  employeeId String     @id @db.VarChar @default(uuid())
   firstName  String     @db.VarChar
   lastName   String     @db.VarChar
   birthDate  DateTime   @db.Timestamp(6)
-  gender     String     @db.Char(1)
-  status     String     @db.VarChar
-  userId     String?    @db.VarChar
+  gender     GENDER?
+  status     STATUS?    @default(OFFLINE)
+  userId     String    @db.VarChar @unique
   ActCount   ActCount[]
   Bpm        Bpm[]
-  user       User?      @relation(fields: [userId], references: [userId], onUpdate: NoAction)
+  user       User      @relation(fields: [userId], references: [userId], onUpdate: NoAction)
   metrics    Metric[]
   PassOut    PassOut[]
   Sos        Sos[]
@@ -82,4 +82,21 @@ model Sos {
   Employee   Employee @relation(fields: [employeeId], references: [employeeId], onDelete: Cascade, onUpdate: NoAction)
 
   @@id([employeeId, createdAt])
+}
+
+enum GENDER {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum ROLE {
+  ADMIN
+  EMPLOYEE
+  MANAGER
+}
+
+enum STATUS {
+  ACTIVE
+  OFFLINE
 }

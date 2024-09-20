@@ -4,6 +4,7 @@ import prisma from "../modules/db";
 export const createMetric = async (req,res) => {
     const metric = await prisma.metric.create({
         data: {
+            createdAt: new Date(),
             physicalScore: req.body.physicalScore,
             mentalScore: req.body.mentalScore,
             employeeId: req.body.employeeId
@@ -16,10 +17,16 @@ export const createMetric = async (req,res) => {
 export const getOneMetric = async (req, res) => {
 
     const id = req.params.id
+    const { createdAt, employeeId } = req.params;
+
+    const createdAtDate = new Date(createdAt);
     
-    const metric = await prisma.metric.findFirst({
+    const metric = await prisma.metric.findUnique({
         where: {
-            id
+            createdAt_employeeId: {
+              createdAt: createdAtDate,
+              employeeId: employeeId
+            },
         }
     })
 

@@ -31,11 +31,11 @@ export const getEmployeesPageable = async (req,res) => {
 
 export const getOneEmployee = async (req, res) => {
 
-    const id = req.params.id
+    const employeeId = req.params.id
     
     const employee = await prisma.employee.findFirst({
         where: {
-            id
+            employeeId
         },
         include: {
             metrics: true
@@ -62,14 +62,13 @@ export const getEmployeeByUserId = async (req, res) => {
 }
 
 export const createEmployee = async (req,res) => {
-    console.log(req.body.birthDate + "sdsds")
     const employee = await prisma.employee.create({
         data: {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             birthDate: req.body.birthDate,
             gender: req.body.gender,
-            userId: req.body.userId
+            userId: req.body.userId,
         }
     })
 
@@ -77,10 +76,10 @@ export const createEmployee = async (req,res) => {
 }
 
 export const updateEmployee = async (req,res) => {
-    const id = req.body.id
+    const employeeId = req.body.id
     const employee = await prisma.employee.update({
         where: {
-            id
+            employeeId
         },
         data: {
             firstName: req.body.firstName,
@@ -94,11 +93,11 @@ export const updateEmployee = async (req,res) => {
 }
 
 export const deleteEmployee = async (req,res) => {
-    const id = req.params.id
+    const employeeId = req.params.id
 
     const deleted = await prisma.employee.delete({
         where: {
-            id
+            employeeId
         }
     })
 

@@ -9,13 +9,14 @@ export const createNewUser = async (req, res) => {
       data: {
         username: req.body.username,
         password: hash,
-        role: req.body.role
+        role: req.body.role,
+        createdAt: new Date(),
       },
       select: {
         username: true,
         role: true,
         createdAt: true,
-        id: true,
+        userId: true,
         password:false
       }
     });
@@ -89,7 +90,7 @@ export const getUsers = async (req,res) => {
     select: {
       username: true,
       role: true,
-      id: true,
+      userId: true,
       createdAt: true,
       password: false,
     }
@@ -110,7 +111,7 @@ export const getUsersPageable = async (req,res) => {
       select: {
         username: true,
         role: true,
-        id: true,
+        userId: true,
         createdAt: true,
         password: false,
       }
@@ -123,7 +124,7 @@ export const getUsersPageable = async (req,res) => {
 
 export const changeMyPass = async (req,res) => {
   const user = await prisma.user.findUnique({
-    where: { id: req.user.id },
+    where: { userId: req.user.id },
   });
 
   const isValid = await comparePasswords(req.body.oldPassword, user.password);
@@ -145,7 +146,7 @@ export const changeMyPass = async (req,res) => {
 
   const updatedUser = await prisma.user.update({
     where: {
-      id: req.user.id
+      userId: req.user.id
     },
     data: {
         password: hash,
@@ -154,7 +155,7 @@ export const changeMyPass = async (req,res) => {
       username: true,
       role: true,
       createdAt: true,
-      id: true,
+      userId: true,
     }
   })
   res.json({data: updatedUser})
@@ -174,7 +175,7 @@ export const changeUserPass = async (req,res) => {
 
   const updatedUser = await prisma.user.update({
     where: {
-      id: req.body.id
+      userId: req.body.id
     },
     data: {
         password: hash,
@@ -183,17 +184,17 @@ export const changeUserPass = async (req,res) => {
       username: true,
       role: true,
       createdAt: true,
-      id: true,
+      userId: true,
     }
   })
   res.json({data: updatedUser})
 }
 
 export const updateUser = async (req,res) => {
-  const id = req.body.id
+  const userId = req.body.id
   const user = await prisma.user.update({
       where: {
-          id
+          userId
       },
       data: {
           username: req.body.username,
@@ -203,7 +204,7 @@ export const updateUser = async (req,res) => {
         username: true,
         role: true,
         createdAt: true,
-        id: true,
+        userId: true,
       }
   })
 
@@ -213,7 +214,7 @@ export const updateUser = async (req,res) => {
 export const deleteUser = async (req,res) => {
   const deleted = await prisma.user.delete({
       where: {
-          id: req.params.id,
+        userId: req.params.id,
       }
   })
 
