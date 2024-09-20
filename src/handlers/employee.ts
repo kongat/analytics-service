@@ -40,7 +40,7 @@ export const getOneEmployee = async (req, res) => {
         include: {
             metrics: true
         }
-    })
+    }) 
 
     res.json({data: employee})
 }
