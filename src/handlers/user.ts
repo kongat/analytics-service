@@ -124,7 +124,7 @@ export const getUsersPageable = async (req,res) => {
 
 export const changeMyPass = async (req,res) => {
   const user = await prisma.user.findUnique({
-    where: { userId: req.user.id },
+    where: { userId: req.user.userId },
   });
 
   const isValid = await comparePasswords(req.body.oldPassword, user.password);
@@ -146,7 +146,7 @@ export const changeMyPass = async (req,res) => {
 
   const updatedUser = await prisma.user.update({
     where: {
-      userId: req.user.id
+      userId: req.user.userId
     },
     data: {
         password: hash,
