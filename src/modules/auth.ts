@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 
 export const createJWT = (user) => {
   const token = jwt.sign(
-    { id: user.id, username: user.username },
+    { id: user.userId, username: user.username },
     process.env.JWT_SECRET
   );
   return token;
