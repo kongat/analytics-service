@@ -4,6 +4,9 @@ import { handleInputErrors } from "./modules/middlewares";
 import { createEmployee, deleteEmployee, getEmployeeByUserId, getEmployees, getEmployeesPageable, getOneEmployee, updateEmployee } from "./handlers/employee";
 import { createMetric,getOneMetric } from "./handlers/metric";
 import { changeMyPass, changeUserPass, createNewUser, deleteUser, getUsers, getUsersPageable, getUsersWithEmployeeRole, updateUser } from "./handlers/user";
+import { createPassout } from "./handlers/passout";
+import { createSos } from "./handlers/sos";
+import { createHealthRecord } from "./handlers/health-record";
 
 
 const router = Router();
@@ -70,6 +73,36 @@ router.post("/metric",
     createMetric);
 
 router.get("/metric/:createdAt/:employeeId", getOneMetric);
+
+/**
+ * PassOut
+ */
+router.post("/passout",
+    body("value").isBoolean(),
+    body("employeeId").isString(), 
+    handleInputErrors, 
+    createPassout);
+
+
+/**
+ * Sos
+ */
+router.post("/sos",
+    body("value").isBoolean(),
+    body("employeeId").isString(), 
+    handleInputErrors, 
+    createSos);
+
+/**
+ * Health Record
+ */
+router.post("/health-record",
+    body("count").isInt(),
+    body("gsr").isDecimal(),
+    body("bpm").isDecimal(),
+    body("employeeId").isString(), 
+    handleInputErrors, 
+    createHealthRecord);
 
 /**
  * Users
