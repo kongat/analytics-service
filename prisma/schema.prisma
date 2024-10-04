@@ -26,6 +26,7 @@ model Employee {
   userId     String    @db.VarChar @unique
   ActCount   ActCount[]
   Bpm        Bpm[]
+  Gsr        Gsr[]
   user       User      @relation(fields: [userId], references: [userId], onUpdate: NoAction)
   metrics    Metric[]
   PassOut    PassOut[]
@@ -52,6 +53,15 @@ model ActCount {
 }
 
 model Bpm {
+  employeeId String   @db.VarChar
+  createdAt  DateTime @db.Timestamp(6)
+  value      Float
+  Employee   Employee @relation(fields: [employeeId], references: [employeeId], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([employeeId, createdAt])
+}
+
+model Gsr {
   employeeId String   @db.VarChar
   createdAt  DateTime @db.Timestamp(6)
   value      Float
