@@ -46,7 +46,7 @@ model Metric {
 model ActCount {
   employeeId String   @db.VarChar
   createdAt  DateTime @db.Timestamp(6)
-  count      Int
+  count      Int?
   Employee   Employee @relation(fields: [employeeId], references: [employeeId], onDelete: Cascade, onUpdate: NoAction)
 
   @@id([employeeId, createdAt])
@@ -55,7 +55,7 @@ model ActCount {
 model Bpm {
   employeeId String   @db.VarChar
   createdAt  DateTime @db.Timestamp(6)
-  value      Float
+  value      Float?
   Employee   Employee @relation(fields: [employeeId], references: [employeeId], onDelete: Cascade, onUpdate: NoAction)
 
   @@id([employeeId, createdAt])
@@ -64,7 +64,7 @@ model Bpm {
 model Gsr {
   employeeId String   @db.VarChar
   createdAt  DateTime @db.Timestamp(6)
-  value      Float
+  value      Float?
   Employee   Employee @relation(fields: [employeeId], references: [employeeId], onDelete: Cascade, onUpdate: NoAction)
 
   @@id([employeeId, createdAt])

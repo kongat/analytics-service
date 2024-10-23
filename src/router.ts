@@ -97,9 +97,9 @@ router.post("/sos",
  * Health Record
  */
 router.post("/health-record",
-    body("count").isInt(),
-    body("gsr").isDecimal(),
-    body("bpm").isDecimal(),
+    body("count").optional({ nullable: true }).isInt(),
+    body("gsr").optional({ nullable: true }).isDecimal(),
+    body("bpm").optional({ nullable: true }).isDecimal(),
     body("employeeId").isString(), 
     handleInputErrors, 
     createHealthRecord);

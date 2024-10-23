@@ -1,0 +1,8 @@
+-- AlterTable
+ALTER TABLE "ActCount" ALTER COLUMN "count" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "Bpm" ALTER COLUMN "value" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "Gsr" ALTER COLUMN "value" DROP NOT NULL;
