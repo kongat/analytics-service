@@ -4,9 +4,10 @@ import { handleInputErrors } from "./modules/middlewares";
 import { createEmployee, deleteEmployee, getEmployeeByUserId, getEmployees, getEmployeesPageable, getOneEmployee, updateEmployee } from "./handlers/employee";
 import { createMetric,getOneMetric } from "./handlers/metric";
 import { changeMyPass, changeUserPass, createNewUser, deleteUser, getUsers, getUsersPageable, getUsersWithEmployeeRole, updateUser } from "./handlers/user";
-import { createPassout } from "./handlers/passout";
-import { createSos } from "./handlers/sos";
+import { createPassout, getUnresolvedPassoutEvents, updatePassout } from "./handlers/passout";
+import { createSos, getUnresolvedSosEvents, updateSos } from "./handlers/sos";
 import { createHealthRecord } from "./handlers/health-record";
+import { getOverall } from "./handlers/overall";
 
 
 const router = Router();
@@ -83,7 +84,13 @@ router.post("/passout",
     handleInputErrors, 
     createPassout);
 
+router.get("/passout", getUnresolvedPassoutEvents);
 
+router.put("/passout",
+    body("employeeId").isString(), 
+    body("value").isBoolean(), 
+    handleInputErrors, 
+    updatePassout);
 /**
  * Sos
  */
@@ -92,6 +99,14 @@ router.post("/sos",
     body("employeeId").isString(), 
     handleInputErrors, 
     createSos);
+
+router.get("/sos", getUnresolvedSosEvents);
+
+router.put("/sos",
+    body("employeeId").isString(), 
+    body("value").isBoolean(), 
+    handleInputErrors, 
+    updateSos);
 
 /**
  * Health Record
@@ -119,6 +134,11 @@ router.put("/change-my-pass", changeMyPass);
 router.put("/change-user-pass", changeUserPass);
 router.delete("/user/:id", deleteUser);
 router.get("/user/employee", getUsersWithEmployeeRole);
+
+/**
+ * Overall
+ */
+router.get("/overall", getOverall);
 
 
 export default router;

@@ -22,7 +22,6 @@ export const createNewUser = async (req, res) => {
     });
     const token = createJWT(user);
     res.json({ data: user, token });
-    req.app.io.sockets.emit('test',{data: "received"});
 };
 
 export const signin = async (req, res) => {

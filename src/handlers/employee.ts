@@ -1,6 +1,7 @@
 import prisma from "../modules/db";
 
 export const getEmployees = async (req,res) => {
+    try {
     const employees = await prisma.employee.findMany({
         include: {
             metrics: true
@@ -8,14 +9,18 @@ export const getEmployees = async (req,res) => {
     })
 
     res.json({data: employees})
+    }  catch(e){
+        console.error("Error fetching employees:", e); // Log the error for debugging
+        res.status(500).json({ error: "An error occurred while fetching employees." });
+    }
 }
 
 export const getEmployeesPageable = async (req,res) => {
     const { page = 0, pageSize = 10 } = req.query;
     
-
+    try {
     const [employees,count] = await prisma.$transaction([
-    
+
     prisma.employee.findMany({
         skip:+page * +pageSize,
         take:+pageSize,
@@ -27,6 +32,10 @@ export const getEmployeesPageable = async (req,res) => {
     prisma.employee.count()])
 
     res.json({data: employees,totalElements: count})
+    }  catch(e){
+        console.error("Error fetching employees:", e); // Log the error for debugging
+        res.status(500).json({ error: "An error occurred while fetching employees." });
+    }
 }
 
 export const getOneEmployee = async (req, res) => {
